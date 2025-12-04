@@ -82,31 +82,45 @@ init_session()
 # ============================================================
 
 def render_css():
+    # --- Thème dynamique ---
     if st.session_state.theme == "dark":
-        bg = "#05070B"
-        card_bg = "#11131a"
-        card_border = "#30384a"
+        bg = "#0a0a0f"
         text = "#ffffff"
-        muted = "#c0c4d0"
+        muted = "#a1a1b5"
+        card_bg = "rgba(255,255,255,0.06)"
+        border_col = "rgba(255,255,255,0.12)"
+        shadow = "rgba(0,0,0,0.8)"
     else:
-        bg = "#f6f6fb"
-        card_bg = "#ffffff"
-        card_border = "#e2e4f0"
-        text = "#111827"
-        muted = "#6b7280"
+        bg = "#f5f7fa"
+        text = "#1a1a1a"
+        muted = "#5f5f6e"
+        card_bg = "rgba(255,255,255,0.7)"
+        border_col = "rgba(0,0,0,0.1)"
+        shadow = "rgba(0,0,0,0.15)"
 
     css = f"""
     <style>
+
+    /* GLOBAL */
     body {{
-        background: radial-gradient(circle at top left, #2b5876, #4e4376);
-    }}
-    .main {{
-        background-color: {bg};
+        background: linear-gradient(135deg, #1f005c, #5c0099, #8b00ff, #ff006e);
+        background-size: 300% 300%;
+        animation: gradientShift 12s ease infinite;
     }}
 
-    h1, h2, h3, h4, h5, h6, p, span, label {{
+    @keyframes gradientShift {{
+        0% {{ background-position: 0% 0%; }}
+        50% {{ background-position: 100% 100%; }}
+        100% {{ background-position: 0% 0%; }}
+    }}
+
+    .main {{
+        background: transparent;
+    }}
+
+    h1, h2, h3, h4, h5, h6, p, div, span {{
         color: {text} !important;
-        font-family: "Poppins", sans-serif;
+        font-family: 'Poppins', sans-serif !important;
     }}
 
     .muted {{
@@ -115,102 +129,96 @@ def render_css():
 
     /* NAVBAR */
     .top-nav {{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:10px 0 25px 0;
-        border-bottom:1px solid #ffffff20;
-        margin-bottom:15px;
+        backdrop-filter: blur(18px);
+        background: rgba(0,0,0,0.25);
+        border-radius: 20px;
+        padding: 20px 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 15px 40px {shadow};
     }}
 
     .brand-title {{
-        font-size:28px;
-        font-weight:700;
-        letter-spacing:3px;
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        background: linear-gradient(90deg,#ff8a00,#e52e71);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }}
 
-    /* CARTE PRODUIT */
+    /* CARTE PRODUIT PREMIUM */
     .product-card {{
-        background:{card_bg};
-        border:1px solid {card_border};
-        border-radius:20px;
-        padding:14px;
-        transition: all 0.25s ease;
-        box-shadow:0 18px 45px rgba(0,0,0,0.35);
-        position:relative;
-        overflow:hidden;
-    }}
-
-    .product-card::before {{
-        content:"";
-        position:absolute;
-        top:-40%;
-        right:-40%;
-        width:70%;
-        height:70%;
-        background:linear-gradient(135deg,#f97316,#ec4899);
-        opacity:0;
-        transition:0.4s;
-        filter:blur(40px);
-    }}
-
-    .product-card:hover::before {{
-        opacity:0.65;
+        backdrop-filter: blur(14px);
+        background: {card_bg};
+        border: 1px solid {border_col};
+        border-radius: 22px;
+        padding: 15px;
+        margin-bottom: 25px;
+        transition: 0.35s ease;
+        box-shadow: 0 10px 40px {shadow};
+        transform: translateY(0px);
     }}
 
     .product-card:hover {{
-        transform: translateY(-6px) scale(1.02);
-        border-color:#f97316;
-        cursor:pointer;
+        transform: translateY(-12px) scale(1.03);
+        border-color: #ff4f8b;
+        box-shadow: 0 25px 60px rgba(255, 0, 100, 0.35);
     }}
 
-    .product-img {{
-        border-radius:16px;
-        width:100%;
-        height:260px;
-        object-fit:cover;
-        box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    .product-card img {{
+        border-radius: 14px !important;
+        height: 290px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+        transition: 0.3s ease;
     }}
 
-    /* BOUTONS */
-    .stButton>button {{
-        border-radius:999px;
-        padding:8px 16px;
-        border:none;
-        font-weight:600;
-        font-size:14px;
-        background:linear-gradient(90deg,#f97316,#ec4899);
-        color:white;
-        box-shadow:0 10px 20px rgba(0,0,0,0.35);
-        transition:transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    }}
-    .stButton>button:hover {{
-        transform:translateY(-2px) scale(1.03);
-        box-shadow:0 16px 35px rgba(0,0,0,0.45);
-        opacity:0.95;
+    .product-card:hover img {{
+        transform: scale(1.05);
     }}
 
     /* BADGES */
     .badge {{
         display:inline-block;
-        padding:4px 10px;
+        padding:5px 14px;
         border-radius:999px;
-        background:rgba(15,118,110,0.13);
-        color:{muted};
+        background:linear-gradient(90deg,#ff8a00,#e52e71);
+        color:white !important;
         font-size:11px;
+        font-weight:600;
         text-transform:uppercase;
         letter-spacing:1px;
+        margin-top:5px;
     }}
 
-    /* INPUTS (amélioration légère) */
-    .stTextInput>div>div>input,
-    .stTextArea textarea {{
-        border-radius:999px !important;
+    /* BOUTONS NEXTGEN */
+    .stButton>button {{
+        border:none;
+        padding:12px 24px;
+        border-radius:999px;
+        font-size:15px;
+        font-weight:600;
+        background: linear-gradient(90deg,#ff8a00,#e52e71);
+        color:white;
+        box-shadow: 0 12px 28px rgba(255,0,120,0.35);
+        transition: 0.25s ease;
     }}
 
+    .stButton>button:hover {{
+        transform: translateY(-3px) scale(1.06);
+        box-shadow: 0 18px 40px rgba(255,0,120,0.55);
+        opacity:0.95;
+    }}
+
+    /* INPUTS */
     .stSelectbox>div>div,
-    .stMultiSelect>div>div {{
-        border-radius:999px !important;
+    .stTextInput>div>div>input,
+    .stMultiSelect>div {{
+        border-radius: 14px !important;
+        background: rgba(255,255,255,0.15) !important;
+        color: {text} !important;
     }}
 
     </style>

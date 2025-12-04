@@ -1,6 +1,14 @@
 import streamlit as st
 from pathlib import Path
 import re
+import os
+
+# Dossier images au même niveau que run.py
+BASE_IMG_DIR = Path(__file__).resolve().parent / "images"
+
+print("Chemin images :", BASE_IMG_DIR)
+print("Existe ? ", BASE_IMG_DIR.exists())
+print("Contenu images :", list(BASE_IMG_DIR.glob("*")))
 
 # ============================================================
 # CONFIG GÉNÉRALE

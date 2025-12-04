@@ -13,32 +13,32 @@ st.set_page_config(
 
 # ============================================================
 # DONNÉES PRODUITS (exemples – adapte à tes images)
-# ============================================================
+
 
 BASE_IMG_DIR = Path(__file__).parent / "images"
 
 PRODUCTS = []
 
-# Regex qui capture les fichiers IMG-20251012-WA00XX.jpg
-pattern = r"IMG-20251012-WA(\d+)\.(jpg|jpeg|png|JPG|JPEG|PNG)"
+# Pattern EXACT correspondant à tes fichiers
+pattern = r"IMG-20251012-WA(\d{4})\.jpg"
 
-# Parcourt tous les fichiers du dossier images
 for file in sorted(BASE_IMG_DIR.iterdir()):
-    if file.is_file() and re.match(pattern, file.name):
-        number = int(re.match(pattern, file.name).group(1))
+    if file.is_file():
+        match = re.match(pattern, file.name)
+        if match:
+            number = int(match.group(1))  # ex "0046" -> 46
 
-        # Exemple simple : chaque image = un produit
-        PRODUCTS.append({
-            "id": number,  # ex : 1 → correspond à WA0001
-            "name": f"Parfum {number}",
-            "brand": "Marque inconnue",
-            "price": 49.90,
-            "category": "Parfum",
-            "image": str(file),
-            "description": "Parfum de haute qualité disponible immédiatement."
-        })
+            PRODUCTS.append({
+                "id": number,
+                "name": f"Parfum {number}",
+                "brand": "Marque inconnue",
+                "price": 49.90,
+                "category": "Parfum",
+                "image": str(file),
+                "description": "Parfum haut de gamme disponible immédiatement."
+            })
 
-# Tri par ID (au cas où)
+# Tri final des produits
 PRODUCTS = sorted(PRODUCTS, key=lambda x: x["id"])
 
 

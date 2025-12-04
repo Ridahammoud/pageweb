@@ -389,7 +389,14 @@ def page_shop():
         with col:
             with st.container():
                 st.markdown('<div class="product-card">', unsafe_allow_html=True)
-                st.image(product["image"], use_column_width=True, caption=" ")
+                st.markdown("<div class='product-card'>", unsafe_allow_html=True)
+                st.markdown(f"<span class='badge'>Nouveau</span>", unsafe_allow_html=True)
+                st.image(product["image"])
+                st.markdown(f"<div class='product-brand'>{product['brand']}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='product-name'>{product['name']}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='product-price'>{product['price']} €</div>", unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)
+
                 st.markdown(f"**{product['name']}**")
                 st.markdown(f"<span class='muted'>{product['brand']}</span>", unsafe_allow_html=True)
                 st.markdown(f"### {product['price']:.2f} €")

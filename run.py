@@ -41,7 +41,7 @@ for file in sorted(BASE_IMG_DIR.iterdir()):
                 "id": number,
                 "name": f"Parfum {number}",
                 "brand": "Marque inconnue",
-                "price": round(random.uniform(30, 120), 2),,
+                "price": round(random.uniform(30, 120), 2),
                 "category": "Parfum",
                 "image": str(file),
                 "description": "Parfum haut de gamme disponible immédiatement."

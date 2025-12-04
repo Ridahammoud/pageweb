@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 import re
 import os
+import random
 
 # Dossier images au même niveau que run.py
 BASE_IMG_DIR = Path(__file__).resolve().parent / "images"
@@ -40,7 +41,7 @@ for file in sorted(BASE_IMG_DIR.iterdir()):
                 "id": number,
                 "name": f"Parfum {number}",
                 "brand": "Marque inconnue",
-                "price": 49.90,
+                "price": round(random.uniform(30, 120), 2),,
                 "category": "Parfum",
                 "image": str(file),
                 "description": "Parfum haut de gamme disponible immédiatement."

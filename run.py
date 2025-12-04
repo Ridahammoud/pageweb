@@ -14,7 +14,7 @@ st.set_page_config(
 # DONNÉES PRODUITS (exemples – adapte à tes images)
 # ============================================================
 
-BASE_IMG_DIR = Path("images")  # dossier où tu mets tes photos
+BASE_IMG_DIR = Path(__file__).parent / "images"  # dossier où tu mets tes photos
 
 PRODUCTS = [
     {

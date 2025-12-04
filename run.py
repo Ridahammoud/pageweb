@@ -49,6 +49,9 @@ for file in sorted(BASE_IMG_DIR.iterdir()):
 # Tri final des produits
 PRODUCTS = sorted(PRODUCTS, key=lambda x: x["id"])
 
+# Correction : définition des catégories
+CATEGORIES = sorted(list({p["category"] for p in PRODUCTS}))
+
 
 # ============================================================
 # INITIALISATION SESSION

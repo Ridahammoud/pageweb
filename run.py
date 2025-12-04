@@ -82,149 +82,147 @@ init_session()
 # ============================================================
 
 def render_css():
-    # --- Thème dynamique ---
-    if st.session_state.theme == "dark":
-        bg = "#0a0a0f"
-        text = "#ffffff"
-        muted = "#a1a1b5"
-        card_bg = "rgba(255,255,255,0.06)"
-        border_col = "rgba(255,255,255,0.12)"
-        shadow = "rgba(0,0,0,0.8)"
-    else:
-        bg = "#f5f7fa"
-        text = "#1a1a1a"
-        muted = "#5f5f6e"
-        card_bg = "rgba(255,255,255,0.7)"
-        border_col = "rgba(0,0,0,0.1)"
-        shadow = "rgba(0,0,0,0.15)"
-
-    css = f"""
+    css = """
     <style>
 
-    /* GLOBAL */
-    body {{
-        background: linear-gradient(135deg, #1f005c, #5c0099, #8b00ff, #ff006e);
-        background-size: 300% 300%;
-        animation: gradientShift 12s ease infinite;
-    }}
+    /* RESET STREAMLIT BACKGROUND */
+    .main, body {
+        background: #F4F2F7 !important;
+        font-family: 'Poppins', sans-serif;
+    }
 
-    @keyframes gradientShift {{
-        0% {{ background-position: 0% 0%; }}
-        50% {{ background-position: 100% 100%; }}
-        100% {{ background-position: 0% 0%; }}
-    }}
+    /* TOP NAV BAR */
+    .top-nav {
+        width: 100%;
+        background: white;
+        border-bottom: 1px solid #e5e5e5;
+        padding: 18px 35px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
 
-    .main {{
-        background: transparent;
-    }}
+    .brand-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #4A148C !important;
+        letter-spacing: 1px;
+    }
 
-    h1, h2, h3, h4, h5, h6, p, div, span {{
-        color: {text} !important;
-        font-family: 'Poppins', sans-serif !important;
-    }}
+    /* SEARCH BAR */
+    .search-container input {
+        width: 100%;
+        padding: 12px 18px;
+        border-radius: 30px;
+        border: 1px solid #d2cfe3;
+        font-size: 16px;
+    }
 
-    .muted {{
-        color: {muted} !important;
-    }}
+    /* MENU CATEGORY BAR */
+    .category-menu {
+        background: white;
+        border-bottom: 1px solid #e5e5e5;
+        padding: 12px 0;
+        display: flex;
+        justify-content: center;
+        gap: 45px;
+        font-size: 15px;
+        font-weight: 600;
+    }
 
-    /* NAVBAR */
-    .top-nav {{
-        backdrop-filter: blur(18px);
-        background: rgba(0,0,0,0.25);
-        border-radius: 20px;
-        padding: 20px 25px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(255,255,255,0.15);
-        box-shadow: 0 15px 40px {shadow};
-    }}
+    .category-menu a {
+        text-decoration: none;
+        color: #333;
+        padding-bottom: 6px;
+    }
 
-    .brand-title {{
-        font-size: 32px;
-        font-weight: 800;
-        letter-spacing: 3px;
-        background: linear-gradient(90deg,#ff8a00,#e52e71);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }}
+    .category-menu a:hover {
+        color: #7b2cbf;
+        border-bottom: 3px solid #7b2cbf;
+    }
 
-    /* CARTE PRODUIT PREMIUM */
-    .product-card {{
-        backdrop-filter: blur(14px);
-        background: {card_bg};
-        border: 1px solid {border_col};
-        border-radius: 22px;
-        padding: 15px;
-        margin-bottom: 25px;
-        transition: 0.35s ease;
-        box-shadow: 0 10px 40px {shadow};
-        transform: translateY(0px);
-    }}
-
-    .product-card:hover {{
-        transform: translateY(-12px) scale(1.03);
-        border-color: #ff4f8b;
-        box-shadow: 0 25px 60px rgba(255, 0, 100, 0.35);
-    }}
-
-    .product-card img {{
-        border-radius: 14px !important;
-        height: 290px !important;
-        width: 100% !important;
-        object-fit: cover !important;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.45);
-        transition: 0.3s ease;
-    }}
-
-    .product-card:hover img {{
-        transform: scale(1.05);
-    }}
-
-    /* BADGES */
-    .badge {{
-        display:inline-block;
-        padding:5px 14px;
-        border-radius:999px;
-        background:linear-gradient(90deg,#ff8a00,#e52e71);
-        color:white !important;
-        font-size:11px;
-        font-weight:600;
-        text-transform:uppercase;
-        letter-spacing:1px;
-        margin-top:5px;
-    }}
-
-    /* BOUTONS NEXTGEN */
-    .stButton>button {{
-        border:none;
-        padding:12px 24px;
-        border-radius:999px;
-        font-size:15px;
-        font-weight:600;
-        background: linear-gradient(90deg,#ff8a00,#e52e71);
-        color:white;
-        box-shadow: 0 12px 28px rgba(255,0,120,0.35);
+    /* PRODUCT GRID */
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #e6e6e6;
+        padding: 18px;
         transition: 0.25s ease;
-    }}
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
 
-    .stButton>button:hover {{
-        transform: translateY(-3px) scale(1.06);
-        box-shadow: 0 18px 40px rgba(255,0,120,0.55);
-        opacity:0.95;
-    }}
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
 
-    /* INPUTS */
-    .stSelectbox>div>div,
-    .stTextInput>div>div>input,
-    .stMultiSelect>div {{
-        border-radius: 14px !important;
-        background: rgba(255,255,255,0.15) !important;
-        color: {text} !important;
-    }}
+    .product-card img {
+        width: 100%;
+        border-radius: 8px;
+        object-fit: contain;
+        height: 280px;
+        background: #fafafa;
+        padding: 15px;
+        border: 1px solid #f0f0f0;
+    }
+
+    .product-brand {
+        margin-top: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #7b2cbf;
+    }
+
+    .product-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 6px;
+    }
+
+    .product-price {
+        font-size: 22px;
+        font-weight: 800;
+        color: #000;
+        margin-top: 10px;
+    }
+
+    /* BADGES (NOUVEAU / PROMO) */
+    .badge {
+        background: white;
+        border: 1px solid black;
+        color: black;
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        border-radius: 4px;
+    }
+
+    /* BUTTONS */
+    .stButton > button {
+        background: #7b2cbf !important;
+        color: white !important;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        transition: 0.2s ease;
+    }
+
+    .stButton > button:hover {
+        background: #5a189a !important;
+        transform: translateY(-3px);
+    }
 
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
-
 
 render_css()
 

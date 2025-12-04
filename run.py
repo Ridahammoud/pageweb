@@ -1,5 +1,6 @@
 import streamlit as st
 from pathlib import Path
+import re
 
 # ============================================================
 # CONFIG GÉNÉRALE
@@ -14,66 +15,31 @@ st.set_page_config(
 # DONNÉES PRODUITS (exemples – adapte à tes images)
 # ============================================================
 
-BASE_IMG_DIR = Path(__file__).parent / "images"  # dossier où tu mets tes photos
+BASE_IMG_DIR = Path(__file__).parent / "images"
 
-PRODUCTS = [
-    {
-        "id": 1,
-        "name": "Versace Bright Crystal",
-        "brand": "Versace",
-        "price": 59.90,
-        "category": "Femme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0173.jpg"),
-        "description": "Un parfum féminin, lumineux et sensuel, aux notes florales et fruitées."
-    },
-    {
-        "id": 2,
-        "name": "Versace Crystal Noir",
-        "brand": "Versace",
-        "price": 64.90,
-        "category": "Femme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0172.jpg"),
-        "description": "Un oriental floral mystérieux, idéal pour les soirées élégantes."
-    },
-    {
-        "id": 3,
-        "name": "La Petite Robe Noire",
-        "brand": "Guerlain",
-        "price": 69.90,
-        "category": "Femme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0171.jpg"),
-        "description": "Le classique iconique de Guerlain, gourmand et chic."
-    },
-    {
-        "id": 4,
-        "name": "Chanel N°5",
-        "brand": "Chanel",
-        "price": 94.90,
-        "category": "Femme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0170.jpg"),
-        "description": "Le parfum le plus célèbre du monde, intemporel et sophistiqué."
-    },
-    {
-        "id": 5,
-        "name": "Dolce & Gabbana The One",
-        "brand": "Dolce & Gabbana",
-        "price": 74.90,
-        "category": "Homme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0167.jpg"),
-        "description": "Boisé épicé, charismatique et moderne."
-    },
-    {
-        "id": 6,
-        "name": "Miss Dior Blooming Bouquet",
-        "brand": "Dior",
-        "price": 79.90,
-        "category": "Femme",
-        "image": str(BASE_IMG_DIR / "IMG-20251012-WA0165.jpg"),
-        "description": "Un bouquet floral frais et délicat, ultra féminin."
-    },
-]
+PRODUCTS = []
 
-CATEGORIES = sorted(list({p["category"] for p in PRODUCTS}))
+# Regex qui capture les fichiers IMG-20251012-WA00XX.jpg
+pattern = r"IMG-20251012-WA(\d+)\.(jpg|jpeg|png|JPG|JPEG|PNG)"
+
+# Parcourt tous les fichiers du dossier images
+for file in sorted(BASE_IMG_DIR.iterdir()):
+    if file.is_file() and re.match(pattern, file.name):
+        number = int(re.match(pattern, file.name).group(1))
+
+        # Exemple simple : chaque image = un produit
+        PRODUCTS.append({
+            "id": number,  # ex : 1 → correspond à WA0001
+            "name": f"Parfum {number}",
+            "brand": "Marque inconnue",
+            "price": 49.90,
+            "category": "Parfum",
+            "image": str(file),
+            "description": "Parfum de haute qualité disponible immédiatement."
+        })
+
+# Tri par ID (au cas où)
+PRODUCTS = sorted(PRODUCTS, key=lambda x: x["id"])
 
 
 # ============================================================
